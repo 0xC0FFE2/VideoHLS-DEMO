@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
-import { VideoProgressRepository } from '../../infrastructure/repositories/video-progress.repository';
-import { VideoRepository } from '../../infrastructure/repositories/video.repository';
-import { UpdateVideoProgressDto, CreateVideoProgressDto, VideoProgressDto } from '../dto/video-progress.dto';
+import { VideoProgressRepository } from '../../infrastructure/repositories/videoProgress/videoProgress.repository';
+import { VideoRepository } from '../../infrastructure/repositories/video/video.repository';
+import { UpdateVideoProgressDto, CreateVideoProgressDto, VideoProgressDto } from '../dto/videoProgress.dto';
 
 @Injectable()
 export class VideoProgressService {

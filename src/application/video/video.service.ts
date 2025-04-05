@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { VideoRepository } from '../../infrastructure/repositories/video.repository';
-import { CourseRepository } from '../../infrastructure/repositories/course.repository';
+import { VideoRepository } from '../../infrastructure/repositories/video/video.repository';
+import { CourseRepository } from '../../infrastructure/repositories/course/course.repository';
 import { VideoDto, CreateVideoDto, UpdateVideoDto } from '../dto/video.dto';
 import { VideoStatus } from '../../domain/video/video.entity';
 import * as fs from 'fs-extra';

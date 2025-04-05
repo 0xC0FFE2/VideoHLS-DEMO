@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Put, Param, Body, UseGuards, Req } from '@nestjs/common';
-import { VideoProgressService } from '../../../application/videoProgress/video-progress.service';
-import { CreateVideoProgressDto, UpdateVideoProgressDto } from '../../../application/dto/video-progress.dto';
+import { VideoProgressService } from '../../../application/videoProgress/videoProgress.service';
+import { CreateVideoProgressDto, UpdateVideoProgressDto } from '../../../application/dto/videoProgress.dto';
 import { JwtAuthGuard } from '../../../application/auth/jwt-auth.guard';
 import { Request } from 'express';
 
@@ -12,7 +12,7 @@ interface RequestWithUser extends Request {
   };
 }
 
-@Controller('api/video-progress')
+@Controller('api/videoProgress')
 export class VideoProgressController {
   constructor(private readonly videoProgressService: VideoProgressService) {}
 

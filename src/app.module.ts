@@ -10,20 +10,12 @@ import { User } from './domain/user/user.entity';
 import { Course } from './domain/course/course.entity';
 import { Video } from './domain/video/video.entity';
 import { Enrollment } from './domain/enrollment/enrollment.entity';
-import { VideoProgress } from './domain/videoProgress/video-progress.entity';
+import { VideoProgress } from './domain/videoProgress/videoProgress.entity';
 
-// 리포지토리
-import { VideoRepository } from './infrastructure/repositories/video.repository';
-import { CourseRepository } from './infrastructure/repositories/course.repository';
-import { VideoProgressRepository } from './infrastructure/repositories/video-progress.repository';
-
-// 서비스
-import { VideoService } from './application/video/video.service';
-import { VideoProgressService } from './application/videoProgress/video-progress.service';
-
-// 컨트롤러
-import { VideoController } from './interface/api/video/video.controller';
-import { VideoProgressController } from './interface/api/videoProgress/video-progress.controller';
+import { CourseModule } from './application/course/course.module';
+import { AuthModule } from './application/auth/auth.module';
+import { VideoModule } from './application/video/video.module';
+import { VideoProgressModule } from './application/videoProgress/videoProgress.module';
 
 @Module({
   imports: [
@@ -31,6 +23,12 @@ import { VideoProgressController } from './interface/api/videoProgress/video-pro
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+
+    // 인증 모듈
+    AuthModule,
+    CourseModule,
+    VideoModule,
+    VideoProgressModule,
 
     // TypeORM 설정
     TypeOrmModule.forRootAsync({
@@ -67,7 +65,7 @@ import { VideoProgressController } from './interface/api/videoProgress/video-pro
       dest: './uploads',
     }),
   ],
-  controllers: [VideoController, VideoProgressController],
-  providers: [VideoService, VideoRepository, CourseRepository, VideoProgressService, VideoProgressRepository],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

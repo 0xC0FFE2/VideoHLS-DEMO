@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { VideoProgress } from '../../domain/videoProgress/video-progress.entity';
-import { User } from '../../domain/user/user.entity';
-import { Video } from '../../domain/video/video.entity';
+import { VideoProgress } from '../../../domain/videoProgress/videoProgress.entity';
+import { User } from '../../../domain/user/user.entity';
+import { Video } from '../../../domain/video/video.entity';
 
 @Injectable()
 export class VideoProgressRepository {

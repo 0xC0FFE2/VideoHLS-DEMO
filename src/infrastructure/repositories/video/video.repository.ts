@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Video } from '../../domain/video/video.entity';
+import { Video } from '../../../domain/video/video.entity';
 
 @Injectable()
 export class VideoRepository {

@@ -1,5 +1,5 @@
 import { IsUUID, IsNumber, IsBoolean, IsOptional } from 'class-validator';
-import { VideoProgress } from '../../domain/videoProgress/video-progress.entity';
+import { VideoProgress } from '../../domain/videoProgress/videoProgress.entity';
 
 export class VideoProgressDto {
   id: string;

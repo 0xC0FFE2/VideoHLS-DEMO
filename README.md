@@ -86,18 +86,94 @@ npm start
 - `src/application/`: 애플리케이션 서비스 레이어
 - `src/infrastructure/`: 인프라스트럭처 코드 (리포지토리 등)
 - `src/interface/`: 컨트롤러 및 API 엔드포인트
-- `client/`: React 프론트엔드 코드
 
-## API 엔드포인트
+## API 명세
 
+### 인증 API
+- `POST /api/auth/register`: 사용자 등록
+  - Request Body: `{ email, password, name, role? }`
+  - Response: `{ id, email, name, role }`
+
+- `POST /api/auth/login`: 로그인
+  - Request Body: `{ email, password }`
+  - Response: `{ access_token, user: { id, email, name, role } }`
+
+- `GET /api/auth/profile`: 현재 사용자 프로필 조회 (인증 필요)
+  - Headers: `Authorization: Bearer {token}`
+  - Response: `{ id, email, name, role }`
+
+### 강의(Course) API
+- `GET /api/courses`: 모든 강의 조회
+  - Response: `[{ id, title, description, imageUrl, ... }]`
+
+- `GET /api/courses/:id`: 강의 상세 조회
+  - Response: `{ id, title, description, imageUrl, author, videos, ... }`
+
+- `POST /api/courses`: 강의 생성 (인증 필요, 관리자/강사 권한)
+  - Headers: `Authorization: Bearer {token}`
+  - Request Body: `{ title, description, imageUrl, authorId?, isNew?, price?, discountPrice?, isFeatured?, isActive? }`
+  - Response: 생성된 강의 객체
+
+- `PUT /api/courses/:id`: 강의 업데이트 (인증 필요, 관리자/강사 권한)
+  - Headers: `Authorization: Bearer {token}`
+  - Request Body: `{ title?, description?, imageUrl?, authorId?, isNew?, price?, discountPrice?, isFeatured?, isActive? }`
+  - Response: 업데이트된 강의 객체
+
+- `DELETE /api/courses/:id`: 강의 삭제 (인증 필요, 관리자/강사 권한)
+  - Headers: `Authorization: Bearer {token}`
+  - Response: `{ success: true }`
+
+### 비디오(Video) API
 - `GET /api/videos`: 모든 비디오 조회
+  - Response: `[{ id, title, description, duration, courseId, ... }]`
+
 - `GET /api/videos/:id`: 비디오 상세 조회
+  - Response: `{ id, title, description, duration, courseId, ... }`
+
 - `GET /api/videos/course/:courseId`: 코스별 비디오 조회
+  - Response: `[{ id, title, description, duration, courseId, ... }]`
+
 - `GET /api/videos/:id/stream`: HLS 스트리밍 엔드포인트
+  - Response: HLS 재생목록 파일 (.m3u8)
+
 - `GET /api/videos/:id/segment/:segmentName`: HLS 세그먼트 제공
-- `POST /api/videos`: 비디오 업로드 (인증 필요)
-- `PUT /api/videos/:id`: 비디오 업데이트 (인증 필요)
-- `DELETE /api/videos/:id`: 비디오 삭제 (인증 필요)
+  - Response: MPEG-TS 세그먼트 파일 (.ts)
+
+- `POST /api/videos`: 비디오 업로드 (인증 필요, 관리자/강사 권한)
+  - Headers: `Authorization: Bearer {token}`
+  - Request Body (multipart/form-data): `{ file, title, description, order, courseId, isPublic? }`
+  - Response: 생성된 비디오 객체
+
+- `PUT /api/videos/:id`: 비디오 업데이트 (인증 필요, 관리자/강사 권한)
+  - Headers: `Authorization: Bearer {token}`
+  - Request Body: `{ title?, description?, order?, courseId?, isPublic? }`
+  - Response: 업데이트된 비디오 객체
+
+- `DELETE /api/videos/:id`: 비디오 삭제 (인증 필요, 관리자/강사 권한)
+  - Headers: `Authorization: Bearer {token}`
+  - Response: `{ success: true }`
+
+### 비디오 진행상태(Video Progress) API
+- `GET /api/videoProgress`: 현재 사용자의 모든 비디오 진행상태 조회 (인증 필요)
+  - Headers: `Authorization: Bearer {token}`
+  - Response: `[{ videoId, userId, currentTime, isCompleted, ... }]`
+
+- `GET /api/videoProgress/:videoId`: 현재 사용자의 특정 비디오 진행상태 조회 (인증 필요)
+  - Headers: `Authorization: Bearer {token}`
+  - Response: `{ videoId, userId, currentTime, isCompleted, ... }`
+
+- `PUT /api/videoProgress/:videoId`: 비디오 진행상태 업데이트 (인증 필요)
+  - Headers: `Authorization: Bearer {token}`
+  - Request Body: `{ currentTime, isCompleted? }`
+  - Response: 업데이트된 진행상태 객체
+
+- `POST /api/videoProgress/:videoId/complete`: 비디오 시청 완료 표시 (인증 필요)
+  - Headers: `Authorization: Bearer {token}`
+  - Response: 업데이트된 진행상태 객체
+
+- `GET /api/videoProgress/:videoId/stats`: 비디오 완료 통계 조회 (인증 필요)
+  - Headers: `Authorization: Bearer {token}`
+  - Response: `{ completedCount, totalViews, ... }`
 
 ## 라이센스
 
