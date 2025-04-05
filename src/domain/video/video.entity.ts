@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Course } from '../course/course.entity';
+import { VideoChapter } from '../videoChapter/videoChapter.entity';
 
 export enum VideoStatus {
   PROCESSING = 'processing',
@@ -48,6 +49,9 @@ export class Video {
 
   @ManyToOne(() => Course, course => course.videos)
   course: Course;
+
+  @OneToMany(() => VideoChapter, chapter => chapter.video)
+  chapters: VideoChapter[];
 
   @CreateDateColumn()
   createdAt: Date;

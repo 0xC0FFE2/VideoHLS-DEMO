@@ -11,11 +11,13 @@ import { Course } from './domain/course/course.entity';
 import { Video } from './domain/video/video.entity';
 import { Enrollment } from './domain/enrollment/enrollment.entity';
 import { VideoProgress } from './domain/videoProgress/videoProgress.entity';
+import { VideoChapter } from './domain/videoChapter/videoChapter.entity';
 
 import { CourseModule } from './application/course/course.module';
 import { AuthModule } from './application/auth/auth.module';
 import { VideoModule } from './application/video/video.module';
 import { VideoProgressModule } from './application/videoProgress/videoProgress.module';
+import { VideoChapterModule } from './application/videoChapter/videoChapter.module';
 
 @Module({
   imports: [
@@ -29,6 +31,7 @@ import { VideoProgressModule } from './application/videoProgress/videoProgress.m
     CourseModule,
     VideoModule,
     VideoProgressModule,
+    VideoChapterModule,
 
     // TypeORM 설정
     TypeOrmModule.forRootAsync({
@@ -42,7 +45,7 @@ import { VideoProgressModule } from './application/videoProgress/videoProgress.m
           username: configService.get('DB_USERNAME'),
           password: configService.get('DB_PASSWORD'),
           database: configService.get('DB_DATABASE'),
-          entities: [User, Course, Video, Enrollment, VideoProgress],
+          entities: [User, Course, Video, Enrollment, VideoProgress, VideoChapter],
           synchronize: true,
           driver: require('mysql2'),
           extra: {
@@ -53,7 +56,7 @@ import { VideoProgressModule } from './application/videoProgress/videoProgress.m
     }),
 
     // 엔티티 등록
-    TypeOrmModule.forFeature([User, Course, Video, Enrollment, VideoProgress]),
+    TypeOrmModule.forFeature([User, Course, Video, Enrollment, VideoProgress, VideoChapter]),
 
     // 정적 파일 제공
     ServeStaticModule.forRoot({

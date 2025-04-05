@@ -7,6 +7,7 @@ HLS(HTTP Live Streaming) 기능을 갖춘 NestJS 기반 동영상 스트리밍 �
 - HLS 비디오 스트리밍
 - 비디오 업로드 및 자동 HLS 변환
 - 강의 플랫폼 기반 (강의, 비디오, 사용자)
+- 비디오 목차(장) 기능
 - 시청 진행 상태 저장
 - TypeORM을 사용한 PostgreSQL 연동
 
@@ -174,6 +175,30 @@ npm start
 - `GET /api/videoProgress/:videoId/stats`: 비디오 완료 통계 조회 (인증 필요)
   - Headers: `Authorization: Bearer {token}`
   - Response: `{ completedCount, totalViews, ... }`
+
+### 비디오 목차(Video Chapter) API
+- `GET /api/videoChapters`: 모든 비디오 목차 조회
+  - Response: `[{ id, title, description, startTime, sortOrder, videoId, ... }]`
+
+- `GET /api/videoChapters/:id`: 목차 상세 조회
+  - Response: `{ id, title, description, startTime, sortOrder, videoId, ... }`
+
+- `GET /api/videoChapters/video/:videoId`: 특정 비디오의 모든 목차 조회
+  - Response: `[{ id, title, description, startTime, sortOrder, videoId, ... }]`
+
+- `POST /api/videoChapters`: 목차 생성 (인증 필요, 관리자/강사 권한)
+  - Headers: `Authorization: Bearer {token}`
+  - Request Body: `{ title, description?, startTime, sortOrder?, videoId }`
+  - Response: 생성된 목차 객체
+
+- `PUT /api/videoChapters/:id`: 목차 업데이트 (인증 필요, 관리자/강사 권한)
+  - Headers: `Authorization: Bearer {token}`
+  - Request Body: `{ title?, description?, startTime?, sortOrder?, isActive? }`
+  - Response: 업데이트된 목차 객체
+
+- `DELETE /api/videoChapters/:id`: 목차 삭제 (인증 필요, 관리자/강사 권한)
+  - Headers: `Authorization: Bearer {token}`
+  - Response: `{ success: true }`
 
 ## 라이센스
 
