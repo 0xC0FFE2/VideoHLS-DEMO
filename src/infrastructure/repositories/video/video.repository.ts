@@ -13,7 +13,7 @@ export class VideoRepository {
   async findAll(): Promise<Video[]> {
     return this.videoRepository.find({ 
       where: { isActive: true },
-      relations: ['course'],
+      relations: ['course', 'chapter'],
       order: { sortOrder: 'ASC' }
     });
   }
@@ -21,13 +21,22 @@ export class VideoRepository {
   async findById(id: string): Promise<Video | null> {
     return this.videoRepository.findOne({ 
       where: { id, isActive: true },
-      relations: ['course']
+      relations: ['course', 'chapter']
     });
   }
 
   async findByCourse(courseId: string): Promise<Video[]> {
     return this.videoRepository.find({
       where: { course: { id: courseId }, isActive: true },
+      relations: ['chapter'],
+      order: { sortOrder: 'ASC' }
+    });
+  }
+  
+  async findByChapter(chapterId: string): Promise<Video[]> {
+    return this.videoRepository.find({
+      where: { chapter: { id: chapterId }, isActive: true },
+      relations: ['course'],
       order: { sortOrder: 'ASC' }
     });
   }

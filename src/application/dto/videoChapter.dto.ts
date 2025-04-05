@@ -5,9 +5,9 @@ export class VideoChapterDto {
   id: string;
   title: string;
   description?: string;
-  startTime: number;
   sortOrder: number;
-  videoId: string;
+  courseId: string;
+  videos?: VideoDto[];
   createdAt: Date;
   updatedAt: Date;
 
@@ -16,11 +16,29 @@ export class VideoChapterDto {
     dto.id = videoChapter.id;
     dto.title = videoChapter.title;
     dto.description = videoChapter.description || undefined;
-    dto.startTime = videoChapter.startTime;
     dto.sortOrder = videoChapter.sortOrder;
-    dto.videoId = videoChapter.video.id;
+    dto.courseId = videoChapter.course.id;
+    if (videoChapter.videos) {
+      dto.videos = videoChapter.videos.map(video => VideoDto.fromEntity(video));
+    }
     dto.createdAt = videoChapter.createdAt;
     dto.updatedAt = videoChapter.updatedAt;
+    return dto;
+  }
+}
+
+export class VideoDto {
+  id: string;
+  title: string;
+  duration: number;
+  thumbnailUrl?: string;
+  
+  static fromEntity(video: any): VideoDto {
+    const dto = new VideoDto();
+    dto.id = video.id;
+    dto.title = video.title;
+    dto.duration = video.duration;
+    dto.thumbnailUrl = video.thumbnailUrl;
     return dto;
   }
 }
@@ -34,15 +52,11 @@ export class CreateVideoChapterDto {
   description?: string;
 
   @IsNumber()
-  @Min(0)
-  startTime: number;
-
-  @IsNumber()
   @IsOptional()
   sortOrder?: number;
 
   @IsUUID()
-  videoId: string;
+  courseId: string;
 }
 
 export class UpdateVideoChapterDto {
@@ -53,11 +67,6 @@ export class UpdateVideoChapterDto {
   @IsString()
   @IsOptional()
   description?: string;
-
-  @IsNumber()
-  @Min(0)
-  @IsOptional()
-  startTime?: number;
 
   @IsNumber()
   @IsOptional()

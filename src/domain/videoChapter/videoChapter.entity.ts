@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Video } from '../video/video.entity';
+import { Course } from '../course/course.entity';
 
 @Entity()
 export class VideoChapter {
@@ -12,18 +13,18 @@ export class VideoChapter {
   @Column('text', { nullable: true })
   description: string | null;
 
-  @Column()
-  startTime: number; // 챕터 시작 시간 (초 단위)
-
   @Column({ default: 0 })
   sortOrder: number; // 목차 순서
 
   @Column({ default: true })
   isActive: boolean;
 
-  @ManyToOne(() => Video, video => video.chapters)
+  @ManyToOne(() => Course, course => course.chapters)
   @JoinColumn()
-  video: Video;
+  course: Course;
+
+  @OneToMany(() => Video, video => video.chapter)
+  videos: Video[];
 
   @CreateDateColumn()
   createdAt: Date;

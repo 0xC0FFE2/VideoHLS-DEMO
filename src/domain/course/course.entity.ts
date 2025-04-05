@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import { User } from '../user/user.entity';
 import { Video } from '../video/video.entity';
+import { VideoChapter } from '../videoChapter/videoChapter.entity';
 
 @Entity()
 export class Course {
@@ -36,6 +37,9 @@ export class Course {
 
   @OneToMany(() => Video, video => video.course)
   videos: Video[];
+
+  @OneToMany(() => VideoChapter, chapter => chapter.course)
+  chapters: VideoChapter[];
 
   @CreateDateColumn()
   createdAt: Date;

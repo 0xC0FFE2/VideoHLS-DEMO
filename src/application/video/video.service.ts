@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { VideoRepository } from '../../infrastructure/repositories/video/video.repository';
 import { CourseRepository } from '../../infrastructure/repositories/course/course.repository';
+import { VideoChapterRepository } from '../../infrastructure/repositories/videoChapter/videoChapter.repository';
 import { VideoDto, CreateVideoDto, UpdateVideoDto } from '../dto/video.dto';
 import { VideoStatus } from '../../domain/video/video.entity';
 import * as fs from 'fs-extra';
@@ -16,6 +17,7 @@ export class VideoService {
   constructor(
     private readonly videoRepository: VideoRepository,
     private readonly courseRepository: CourseRepository,
+    private readonly videoChapterRepository: VideoChapterRepository,
     private readonly configService: ConfigService,
   ) {
     this.uploadPath = this.configService.get('FILE_UPLOAD_PATH') || './uploads';
@@ -184,6 +186,19 @@ export class VideoService {
     const video = await this.videoRepository.findById(id);
     if (!video) {
       throw new NotFoundException(`Video with ID ${id} not found`);
+    }
+    
+    // 챕터 ID가 제공되었을 경우 챕터 연결 확인
+    if (updateVideoDto.chapterId) {
+      const chapter = await this.videoChapterRepository.findById(updateVideoDto.chapterId);
+      if (!chapter) {
+        throw new NotFoundException(`Chapter with ID ${updateVideoDto.chapterId} not found`);
+      }
+      
+      // 선택된 챕터가 해당 비디오와 같은 코스에 속하는지 확인
+      if (chapter.course.id !== video.course.id) {
+        throw new NotFoundException('Chapter must belong to the same course as the video');
+      }
     }
     
     const updatedVideo = await this.videoRepository.update(id, updateVideoDto);

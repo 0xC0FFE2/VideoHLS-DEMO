@@ -14,6 +14,8 @@ export class VideoDto {
   sortOrder: number;
   courseId: string;
   courseTitle?: string;
+  chapterId?: string;
+  chapterTitle?: string;
   createdAt: Date;
   updatedAt: Date;
 
@@ -35,6 +37,11 @@ export class VideoDto {
     if (video.course) {
       dto.courseId = video.course.id;
       dto.courseTitle = video.course.title;
+    }
+    
+    if (video.chapter) {
+      dto.chapterId = video.chapter.id;
+      dto.chapterTitle = video.chapter.title;
     }
     
     return dto;
@@ -71,4 +78,8 @@ export class UpdateVideoDto {
   @IsNumber()
   @IsOptional()
   sortOrder?: number;
+
+  @IsUUID()
+  @IsOptional()
+  chapterId?: string;
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Course } from '../course/course.entity';
 import { VideoChapter } from '../videoChapter/videoChapter.entity';
 
@@ -50,8 +50,9 @@ export class Video {
   @ManyToOne(() => Course, course => course.videos)
   course: Course;
 
-  @OneToMany(() => VideoChapter, chapter => chapter.video)
-  chapters: VideoChapter[];
+  @ManyToOne(() => VideoChapter, chapter => chapter.videos)
+  @JoinColumn()
+  chapter: VideoChapter;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { VideoChapterRepository } from '../../infrastructure/repositories/videoChapter/videoChapter.repository';
-import { VideoRepository } from '../../infrastructure/repositories/video/video.repository';
+import { CourseRepository } from '../../infrastructure/repositories/course/course.repository';
 import { CreateVideoChapterDto, UpdateVideoChapterDto, VideoChapterDto } from '../dto/videoChapter.dto';
 import { VideoChapter } from '../../domain/videoChapter/videoChapter.entity';
 
@@ -8,7 +8,7 @@ import { VideoChapter } from '../../domain/videoChapter/videoChapter.entity';
 export class VideoChapterService {
   constructor(
     private readonly videoChapterRepository: VideoChapterRepository,
-    private readonly videoRepository: VideoRepository,
+    private readonly courseRepository: CourseRepository,
   ) {}
 
   async getAllChapters(): Promise<VideoChapterDto[]> {
@@ -26,23 +26,22 @@ export class VideoChapterService {
     return VideoChapterDto.fromEntity(chapter);
   }
 
-  async getChaptersByVideo(videoId: string): Promise<VideoChapterDto[]> {
-    const chapters = await this.videoChapterRepository.findByVideo(videoId);
+  async getChaptersByCourse(courseId: string): Promise<VideoChapterDto[]> {
+    const chapters = await this.videoChapterRepository.findByCourse(courseId);
     return chapters.map(chapter => VideoChapterDto.fromEntity(chapter));
   }
 
   async createChapter(createChapterDto: CreateVideoChapterDto): Promise<VideoChapterDto> {
-    const video = await this.videoRepository.findById(createChapterDto.videoId);
-    if (!video) {
-      throw new NotFoundException(`Video with ID "${createChapterDto.videoId}" not found`);
+    const course = await this.courseRepository.findById(createChapterDto.courseId);
+    if (!course) {
+      throw new NotFoundException(`Course with ID "${createChapterDto.courseId}" not found`);
     }
     
     const chapter = new VideoChapter();
     chapter.title = createChapterDto.title;
     chapter.description = createChapterDto.description || null;
-    chapter.startTime = createChapterDto.startTime;
     chapter.sortOrder = createChapterDto.sortOrder || 0;
-    chapter.video = video;
+    chapter.course = course;
     
     const savedChapter = await this.videoChapterRepository.save(chapter);
     return VideoChapterDto.fromEntity(savedChapter);
@@ -57,7 +56,6 @@ export class VideoChapterService {
     
     if (updateChapterDto.title) chapter.title = updateChapterDto.title;
     if (updateChapterDto.description !== undefined) chapter.description = updateChapterDto.description || null;
-    if (updateChapterDto.startTime !== undefined) chapter.startTime = updateChapterDto.startTime;
     if (updateChapterDto.sortOrder !== undefined) chapter.sortOrder = updateChapterDto.sortOrder;
     if (updateChapterDto.isActive !== undefined) chapter.isActive = updateChapterDto.isActive;
     

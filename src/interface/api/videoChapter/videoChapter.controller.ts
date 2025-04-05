@@ -22,10 +22,10 @@ export class VideoChapterController {
     return this.videoChapterService.getChapterById(id);
   }
 
-  // 비디오별 챕터 조회
-  @Get('video/:videoId')
-  async getChaptersByVideo(@Param('videoId') videoId: string) {
-    return this.videoChapterService.getChaptersByVideo(videoId);
+  // 강의별 챕터 조회
+  @Get('course/:courseId')
+  async getChaptersByCourse(@Param('courseId') courseId: string) {
+    return this.videoChapterService.getChaptersByCourse(courseId);
   }
 
   // 챕터 생성 (관리자/강사만 가능)

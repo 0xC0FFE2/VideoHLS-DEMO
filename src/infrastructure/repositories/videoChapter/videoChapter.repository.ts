@@ -13,7 +13,7 @@ export class VideoChapterRepository {
   async findAll(): Promise<VideoChapter[]> {
     return this.videoChapterRepository.find({ 
       where: { isActive: true },
-      relations: ['video'],
+      relations: ['course', 'videos'],
       order: { sortOrder: 'ASC' }
     });
   }
@@ -21,13 +21,14 @@ export class VideoChapterRepository {
   async findById(id: string): Promise<VideoChapter | null> {
     return this.videoChapterRepository.findOne({ 
       where: { id, isActive: true },
-      relations: ['video']
+      relations: ['course', 'videos']
     });
   }
 
-  async findByVideo(videoId: string): Promise<VideoChapter[]> {
+  async findByCourse(courseId: string): Promise<VideoChapter[]> {
     return this.videoChapterRepository.find({
-      where: { video: { id: videoId }, isActive: true },
+      where: { course: { id: courseId }, isActive: true },
+      relations: ['videos'],
       order: { sortOrder: 'ASC' }
     });
   }
