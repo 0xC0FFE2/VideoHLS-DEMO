@@ -58,10 +58,6 @@ import { VideoChapterModule } from './application/videoChapter/videoChapter.modu
     // 엔티티 등록
     TypeOrmModule.forFeature([User, Course, Video, Enrollment, VideoProgress, VideoChapter]),
 
-    // 정적 파일 제공
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client', 'build'),
-    }),
 
     // 파일 업로드
     MulterModule.register({

@@ -24,6 +24,8 @@ async function bootstrap() {
   // 정적 파일 제공
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
   app.use('/hls', express.static(join(__dirname, '..', 'hls')));
+  app.use('/api/videos', express.static(join(__dirname, '..', 'hls')));
+
   
   // 서버 시작
   const port = configService.get('PORT') || 3000;
